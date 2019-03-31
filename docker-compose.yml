@@ -1,0 +1,84 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:5.7.22
+    environment:
+      - LANG=C.UTF-8
+      - MYSQL_ROOT_PASSWORD=mysql
+    volumes:
+      - mysql_volume:/var/lib/mysql
+    ports:
+      - '3306:3306'
+  redis:
+    image: redis:4.0.9-alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_volume:/data
+    hostname: redis
+  server-web: &server-app_base
+    build: ./docker/server/web
+    command: bundle exec rails s -b 0.0.0.0
+    ports:
+      - '3000:3000'
+    environment:
+      - PATH=/app/bin:/app/node_modules/.bin:/usr/local/bundle/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      - USER_ID=${USER_ID}
+      - GROUP_ID=${GROUP_ID}
+      - MYSQL_ROOT_PASSWORD=mysql
+    volumes:
+      - .:/app
+      - server-bundle_volume:/usr/local/bundle
+      - server-home_volume:/home/docker
+    working_dir: /app/server
+    depends_on:
+      - mysql
+      - redis
+    hostname: server-web
+    privileged: true
+    entrypoint: ../docker/server/web/docker-entrypoint.sh
+  server-spring:
+    <<: *server-app_base
+    command: spring server
+    ports: []
+    environment:
+      - PATH=/app/server/bin:/app/server/node_modules/.bin:/usr/local/bundle/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      - USER_ID=${USER_ID}
+      - GROUP_ID=${GROUP_ID}
+      - MYSQL_ROOT_PASSWORD=mysql
+      - SPRING_SOCKET=/home/docker/.spring/spring.sock
+    hostname: server-spring
+  front:
+    build: ./docker/front
+    environment:
+      USER_ID: ${USER_ID}
+      GROUP_ID: ${GROUP_ID}
+      HOST: 0.0.0.0
+      PORT: 3030
+    volumes:
+      - .:/app
+      - front-home_volume:/home/docker
+      - front-node_home_volume:/home/node
+    working_dir: /app/front
+    depends_on:
+      - server-web
+    ports:
+      - '3030:3030'
+    hostname: front
+    entrypoint: ../docker/front/docker-entrypoint.sh
+    command: yarn run dev
+
+volumes:
+  mysql_volume:
+    driver: local
+  redis_volume:
+    driver: local
+  server-bundle_volume:
+    driver: local
+  server-home_volume:
+    driver: local
+  front-home_volume:
+    driver: local
+  front-node_home_volume:
+    driver: local
