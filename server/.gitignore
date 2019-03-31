@@ -22,3 +22,19 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# config
+/config/application.yml
+/config/database.yml
+
+# coverage
+/coverage
+
+# node
+/node_modules
+yarn-debug.log*
+.yarn-integrity
+
+# webpacker
+/public/packs
+/public/packs-test

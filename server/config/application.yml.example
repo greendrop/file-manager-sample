@@ -1,0 +1,88 @@
+common: &base
+  url:
+    api:
+      host: localhost
+      port: 3000
+      protocol: 'http'
+      root: '/'
+    admin:
+      host: localhost
+      port: 3000
+      protocol: 'http'
+      root: '/admin'
+  email:
+    from: from@localhost
+  redis:
+    default: &redis_default
+      url:    redis://redis:6379/0
+      driver: hiredis
+      namespace: file-manager-sample_default
+    cache_store: &redis_cache_store
+      url:    redis://redis:6379/0
+      driver: hiredis
+      namespace: file-manager-sample_cache
+    session_store: &redis_session_store
+      url:    redis://redis:6379/0
+      driver: hiredis
+      namespace: file-manager-sample_session
+    sidekiq: &redis_sidekiq
+      url:    redis://redis:6379/0
+      driver: hiredis
+      namespace: file-manager-sample_sidekiq
+  cache_store:
+    expires_in: <%= 1.day %>
+  session_store:
+    expire_after: <%= 1.day %>
+  elasticsearch:
+    url: elasticsearch:9200
+    number_of_shards: 1
+    number_of_replicas: 0
+    log: true
+
+development:
+  <<: *base
+  redis:
+    default:
+      <<: *redis_default
+      namespace: file-manager-sample_development_default
+    cache_store:
+      <<: *redis_cache_store
+      namespace: file-manager-sample_development_cache
+    session_store:
+      <<: *redis_session_store
+      namespace: file-manager-sample_development_session
+    sidekiq:
+      <<: *redis_sidekiq
+      namespace: file-manager-sample_development_sidekiq
+
+test:
+  <<: *base
+  redis:
+    default:
+      <<: *redis_default
+      namespace: file-manager-sample_test_default
+    cache_store:
+      <<: *redis_cache_store
+      namespace: file-manager-sample_test_cache
+    session_store:
+      <<: *redis_session_store
+      namespace: file-manager-sample_test_session
+    sidekiq:
+      <<: *redis_sidekiq
+      namespace: file-manager-sample_test_sidekiq
+
+production:
+  <<: *base
+  redis:
+    default:
+      <<: *redis_default
+      namespace: file-manager-sample_production_default
+    cache_store:
+      <<: *redis_cache_store
+      namespace: file-manager-sample_production_cache
+    session_store:
+      <<: *redis_session_store
+      namespace: file-manager-sample_production_session
+    sidekiq:
+      <<: *redis_sidekiq
+      namespace: file-manager-sample_production_sidekiq
