@@ -38,6 +38,8 @@ common: &base
     number_of_shards: 1
     number_of_replicas: 0
     log: true
+  attachment:
+    base_path: private/attachments
 
 development:
   <<: *base
@@ -70,6 +72,8 @@ test:
     sidekiq:
       <<: *redis_sidekiq
       namespace: file-manager-sample_test_sidekiq
+  attachment:
+    base_path: private/attachments
 
 production:
   <<: *base

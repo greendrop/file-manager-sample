@@ -13,6 +13,11 @@ module RoutesApi
 
   draw do
     namespace :v1 do
+      resources :files, only: [] do
+        collection do
+          get :list
+        end
+      end
     end
   end
 end

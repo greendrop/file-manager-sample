@@ -38,3 +38,7 @@ yarn-debug.log*
 # webpacker
 /public/packs
 /public/packs-test
+
+# attachment
+/private
+/private_test
