@@ -32,26 +32,54 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['~/assets/style/app.styl'],
+  css: ['~/assets/style/vuetify.styl'],
 
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/vuetify'],
+  plugins: [
+    '@/plugins/vuetify',
+    '~/plugins/vee-validate',
+    '~/plugins/vue-filter'
+  ],
 
   /*
    ** Nuxt.js modules
    */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    '@nuxtjs/dotenv',
+    '@nuxtjs/toast',
+    [
+      'nuxt-i18n',
+      {
+        locales: [
+          {
+            code: 'ja',
+            iso: 'ja',
+            file: 'ja.js'
+          }
+        ],
+        defaultLocale: 'ja',
+        lazy: true,
+        langDir: 'locales/'
+      }
+    ]
   ],
   /*
    ** Axios module configuration
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+  },
+
+  /*
+   ** toast configuration
+   */
+  toast: {
+    position: 'top-right',
+    duration: 5000
   },
 
   /*
@@ -79,5 +107,15 @@ export default {
         })
       }
     }
+  },
+  manifest: {
+    name: pkg.name,
+    short_name: pkg.name,
+    author: pkg.author,
+    description: pkg.description,
+    lang: 'ja'
+  },
+  workbox: {
+    dev: true
   }
 }

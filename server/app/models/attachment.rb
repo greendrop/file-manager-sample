@@ -4,6 +4,7 @@ class Attachment
 
   attribute :type, :integer
   attribute :name, :string
+  attribute :sort_name, :string
   attribute :path, :string
   attribute :size, :integer
   attribute :created_at, :datetime
@@ -23,14 +24,18 @@ class Attachment
           stat = File.stat(result)
           object =
             if stat.directory?
+              name = File.basename(result)
+              sort_name = "#{Attachment.type.find_value('directory').value}-#{name}"
               Attachment.new(
-                type: 'directory', name: File.basename(result),
+                type: 'directory', name: name, sort_name: sort_name,
                 path: result.sub(base_path, ''), size: nil,
                 created_at: stat.ctime, updated_at: stat.mtime
               )
             elsif stat.file?
+              name = File.basename(result)
+              sort_name = "#{Attachment.type.find_value('file').value}-#{name}"
               Attachment.new(
-                type: 'directory', name: File.basename(result),
+                type: 'file', name: name, sort_name: sort_name,
                 path: result.sub(base_path, ''), size: stat.size,
                 created_at: stat.ctime, updated_at: stat.mtime
               )
@@ -42,7 +47,8 @@ class Attachment
   end
 
   def as_api_json
-    { type: self.type, name: self.name, path: self.path, size: self.size,
+    { type: self.type, name: self.name, sort_name: self.sort_name,
+      path: self.path, size: self.size,
       created_at: self.created_at, updated_at: self.updated_at}
   end
 end
