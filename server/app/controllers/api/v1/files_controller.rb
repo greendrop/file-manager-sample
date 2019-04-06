@@ -11,12 +11,8 @@ module Api
 
       # ファイル取得
       def get
-        path =
-          Rails.root.join(
-            (Rails.env.test? ? 'private_test' : 'private'),
-            'attachments',
-            params[:path].to_s.sub(%r{^/}, '')
-          )
+        path = path_by_path_param
+        return head 404 unless File.file?(path)
 
         if request.headers['HTTP_RANGE'] && !Rails.configuration.action_dispatch.x_sendfile_header
           size = File.size(path)
@@ -36,13 +32,27 @@ module Api
 
       # ファイルダウンロード
       def download
-        path =
-          Rails.root.join(
-            (Rails.env.test? ? 'private_test' : 'private'),
-            'attachments',
-            params[:path].to_s.sub(%r{^/}, '')
-          )
+        path = path_by_path_param
+        return head 404 unless File.file?(path)
+
         send_file(path, filename: File.basename(path), disposition: 'attachment')
+      end
+
+      # ディレクトリ作成
+      def create_directory
+        path = path_by_path_param
+        FileUtils.mkdir_p(path)
+        head 201
+      end
+
+      private
+
+      def path_by_path_param
+        Rails.root.join(
+          (Rails.env.test? ? 'private_test' : 'private'),
+          'attachments',
+          params[:path].to_s.sub(%r{^/}, '')
+        )
       end
     end
   end

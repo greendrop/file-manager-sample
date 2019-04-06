@@ -18,6 +18,7 @@ module RoutesApi
           get :list
           get :get
           get :download
+          post :create_directory
         end
       end
     end

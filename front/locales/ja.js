@@ -16,13 +16,15 @@ export default {
     home: 'ホーム',
     signIn: 'ログイン',
     signOut: 'ログアウト',
-    root: 'ルート'
+    root: 'ルート',
+    close: '閉じる'
   },
   messages: {
     destroyConfirm: '本当に削除してもいいですか?',
     createModel: '{model}を登録しました。',
     updateModel: '{model}を更新しました。',
     destroyModel: '{model}を削除しました。',
+    createDirectory: 'ディレクトリを作成しました。',
     signedIn: 'ログインしました。',
     signedOut: 'ログアウトしました。',
     errorOccurred: 'エラーが発生しました。'
@@ -41,6 +43,13 @@ export default {
     }
   },
   layouts: {},
-  pages: {},
+  pages: {
+    attachments: {
+      index: {
+        createDirectory: 'ディレクトリ作成',
+        directoryName: 'ディレクトリ名'
+      }
+    }
+  },
   components: {}
 }

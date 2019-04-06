@@ -5,7 +5,8 @@ import changeCaseObject from '~/lib/change-case-object'
 export const state = () => ({
   attachments: [],
   errorStatus: null,
-  errorData: null
+  errorData: null,
+  createdDirectory: false
 })
 
 export const actions = {
@@ -28,6 +29,21 @@ export const actions = {
         commit('setErrorStatus', error.response.status)
         commit('setErrorData', changeCaseObject.camelCase(error.response.data))
       })
+  },
+  async createDirectory({ commit }, { params = {} }) {
+    const url = `${apiUrl.getApiBaseUrl()}/api/v1/files/create_directory`
+    await this.$axios
+      .post(url, params)
+      .then(() => {
+        commit('setCreatedDirectory', true)
+        commit('setErrorStatus', null)
+        commit('setErrorData', null)
+      })
+      .catch(error => {
+        commit('setCreatedDirectory', false)
+        commit('setErrorStatus', error.response.errorStatus)
+        commit('setErrorData', error.response.errorData)
+      })
   }
 }
 
@@ -40,6 +56,9 @@ export const mutations = {
   },
   setErrorData(state, data) {
     state.errorData = data
+  },
+  setCreatedDirectory(state, data) {
+    state.createdDirectory = data
   }
 }
 
@@ -52,5 +71,8 @@ export const getters = {
   },
   errorData(state) {
     return state.errorData
+  },
+  createdDirectory(state) {
+    return state.createdDirectory
   }
 }
