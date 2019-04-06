@@ -37,7 +37,7 @@
                   </div>
                 </template>
                 <template v-if="props.item.type === 'file'">
-                  <div>
+                  <div @dblclick="openFile(props.item)">
                     <v-icon small>
                       fas fa-file
                     </v-icon>
@@ -48,7 +48,13 @@
               <td>{{ props.item.size }}</td>
               <td>{{ props.item.createdAt | datetime }}</td>
               <td>{{ props.item.updatedAt | datetime }}</td>
-              <td></td>
+              <td>
+                <template v-if="props.item.type === 'file'">
+                  <v-icon small class="mr-1" @click="downloadFile(props.item)">
+                    fas fa-download
+                  </v-icon>
+                </template>
+              </td>
             </template>
           </v-data-table>
         </v-flex>
@@ -144,6 +150,15 @@ export default {
         path: '/attachments',
         query: { path: attachment.path }
       })
+    },
+    openFile(attachment) {
+      window.open(attachment.url, '_blank')
+    },
+    downloadFile(attachment) {
+      const link = document.createElement('a')
+      link.href = attachment.downloadUrl
+      link.download = attachment.name
+      link.click()
     }
   }
 }

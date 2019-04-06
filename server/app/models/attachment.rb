@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Attachment
   include ActiveModel::Model
   include ActiveModel::Attributes
@@ -14,8 +16,8 @@ class Attachment
   enumerize :type, in: { directory: 1, file: 2 }
 
   class << self
-    def list(options)
-      base_path = Settings.attachment.base_path  
+    def list(options) # rubocop:disable Metrics/MethodLength
+      base_path = Settings.attachment.base_path
       path = File.join(base_path, options[:path].to_s, '/*')
 
       results = Dir.glob(path, File::FNM_DOTMATCH).reject { |x| x =~ /\.$/ }
@@ -47,8 +49,14 @@ class Attachment
   end
 
   def as_api_json
-    { type: self.type, name: self.name, sort_name: self.sort_name,
-      path: self.path, size: self.size,
-      created_at: self.created_at, updated_at: self.updated_at}
+    url = Rails.application.routes.url_helpers.get_api_v1_files_url(
+      host: Settings.url.api.host, port: Settings.url.api.port, path: path
+    )
+    download_url = Rails.application.routes.url_helpers.download_api_v1_files_url(
+      host: Settings.url.api.host, port: Settings.url.api.port, path: path
+    )
+    { type: type, name: name, sort_name: sort_name,
+      path: path, size: size, url: url, download_url: download_url,
+      created_at: created_at, updated_at: updated_at }
   end
 end

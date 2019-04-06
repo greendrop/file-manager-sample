@@ -16,6 +16,8 @@ module RoutesApi
       resources :files, only: [] do
         collection do
           get :list
+          get :get
+          get :download
         end
       end
     end
