@@ -41,7 +41,14 @@ module Api
       # ディレクトリ作成
       def create_directory
         path = path_by_path_param
-        FileUtils.mkdir_p(path)
+        Attachment.create_directory(path)
+        head 201
+      end
+
+      # 削除
+      def delete
+        path = path_by_path_param
+        Attachment.delete(path)
         head 201
       end
 

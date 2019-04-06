@@ -25,6 +25,7 @@ export default {
     updateModel: '{model}を更新しました。',
     destroyModel: '{model}を削除しました。',
     createDirectory: 'ディレクトリを作成しました。',
+    deleted: '削除しました。',
     signedIn: 'ログインしました。',
     signedOut: 'ログアウトしました。',
     errorOccurred: 'エラーが発生しました。'

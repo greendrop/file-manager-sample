@@ -46,6 +46,18 @@ class Attachment
         end
       attachemnts.sort_by { |item| [item.type.value, item.name] }
     end
+
+    def create_directory(path)
+      FileUtils.mkdir_p(path)
+    end
+
+    def delete(path)
+      if File.file?(path)
+        FileUtils.rm_f(path)
+      elsif File.directory?(path)
+        FileUtils.rm_rf(path)
+      end
+    end
   end
 
   def as_api_json

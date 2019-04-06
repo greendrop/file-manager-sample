@@ -6,7 +6,8 @@ export const state = () => ({
   attachments: [],
   errorStatus: null,
   errorData: null,
-  createdDirectory: false
+  createdDirectory: false,
+  deleted: false
 })
 
 export const actions = {
@@ -44,6 +45,21 @@ export const actions = {
         commit('setErrorStatus', error.response.errorStatus)
         commit('setErrorData', error.response.errorData)
       })
+  },
+  async delete({ commit }, { params = {} }) {
+    const url = `${apiUrl.getApiBaseUrl()}/api/v1/files/delete`
+    await this.$axios
+      .post(url, params)
+      .then(() => {
+        commit('setDeleted', true)
+        commit('setErrorStatus', null)
+        commit('setErrorData', null)
+      })
+      .catch(error => {
+        commit('setDeleted', false)
+        commit('setErrorStatus', error.response.errorStatus)
+        commit('setErrorData', error.response.errorData)
+      })
   }
 }
 
@@ -59,6 +75,9 @@ export const mutations = {
   },
   setCreatedDirectory(state, data) {
     state.createdDirectory = data
+  },
+  setDeleted(state, data) {
+    state.deleted = data
   }
 }
 
@@ -74,5 +93,8 @@ export const getters = {
   },
   createdDirectory(state) {
     return state.createdDirectory
+  },
+  deleted(state) {
+    return state.deleted
   }
 }

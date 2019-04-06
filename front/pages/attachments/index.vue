@@ -101,11 +101,35 @@
               <td>{{ props.item.createdAt | datetime }}</td>
               <td>{{ props.item.updatedAt | datetime }}</td>
               <td>
-                <template v-if="props.item.type === 'file'">
-                  <v-icon small class="mr-1" @click="downloadFile(props.item)">
-                    fas fa-download
-                  </v-icon>
-                </template>
+                <v-layout justify-center>
+                  <template v-if="props.item.type === 'file'">
+                    <v-icon
+                      small
+                      class="mr-1"
+                      @click="downloadFile(props.item)"
+                    >
+                      fas fa-download
+                    </v-icon>
+                    <v-icon
+                      small
+                      class="mr-1"
+                      color="error"
+                      @click="deleteAttachment(props.item)"
+                    >
+                      fas fa-trash-alt
+                    </v-icon>
+                  </template>
+                  <template v-if="props.item.type === 'directory'">
+                    <v-icon
+                      small
+                      class="mr-1"
+                      color="error"
+                      @click="deleteAttachment(props.item)"
+                    >
+                      fas fa-trash-alt
+                    </v-icon>
+                  </template>
+                </v-layout>
               </td>
             </template>
           </v-data-table>
@@ -255,6 +279,29 @@ export default {
       link.href = attachment.downloadUrl
       link.download = attachment.name
       link.click()
+    },
+    async deleteAttachment(attachment) {
+      if (confirm(this.$t('messages.destroyConfirm'))) {
+        this.processing = true
+        this.processValue = 0
+
+        await this.$store.dispatch('attachments/delete', {
+          params: { path: attachment.path }
+        })
+
+        if (this.$store.getters['attachments/deleted']) {
+          const message = this.$t('messages.deleted')
+          this.$toast.success(message)
+        } else {
+          const message = this.$t('messages.errorOccurred')
+          this.$toast.error(message)
+        }
+
+        this.processValue = 100
+        this.processing = false
+
+        this.getAttachments()
+      }
     }
   }
 }
