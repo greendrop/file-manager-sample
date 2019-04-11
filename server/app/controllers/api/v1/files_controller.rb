@@ -52,6 +52,16 @@ module Api
         head 201
       end
 
+      # ファイルアップロード
+      def upload
+        file = params[:file]
+        src = file.tempfile.path
+        dest = path_by_path_param
+        Attachment.create_directory(File.dirname(dest))
+        Attachment.cp(src, dest)
+        head 201
+      end
+
       private
 
       def path_by_path_param

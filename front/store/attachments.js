@@ -7,7 +7,9 @@ export const state = () => ({
   errorStatus: null,
   errorData: null,
   createdDirectory: false,
-  deleted: false
+  deleted: false,
+  uploaded: false,
+  uploadProgressValue: 0
 })
 
 export const actions = {
@@ -27,7 +29,7 @@ export const actions = {
       })
       .catch(error => {
         commit('setAttachments', [])
-        commit('setErrorStatus', error.response.status)
+        commit('setErrorStatus', error.response.errorStatus)
         commit('setErrorData', changeCaseObject.camelCase(error.response.data))
       })
   },
@@ -42,8 +44,8 @@ export const actions = {
       })
       .catch(error => {
         commit('setCreatedDirectory', false)
-        commit('setErrorStatus', error.response.errorStatus)
-        commit('setErrorData', error.response.errorData)
+        commit('setErrorStatus', error.response.status)
+        commit('setErrorData', changeCaseObject.camelCase(error.response.data))
       })
   },
   async delete({ commit }, { params = {} }) {
@@ -57,8 +59,32 @@ export const actions = {
       })
       .catch(error => {
         commit('setDeleted', false)
-        commit('setErrorStatus', error.response.errorStatus)
-        commit('setErrorData', error.response.errorData)
+        commit('setErrorStatus', error.response.status)
+        commit('setErrorData', changeCaseObject.camelCase(error.response.data))
+      })
+  },
+  async upload({ commit }, { params = {} }) {
+    const url = `${apiUrl.getApiBaseUrl()}/api/v1/files/upload`
+    const formParams = new FormData()
+    for (const key in params) {
+      formParams.append(key, params[key])
+    }
+    const headers = { 'content-type': 'multipart/form-data' }
+    commit('setUploadProgressValue', 0)
+
+    await this.$axios
+      .post(url, formParams, { headers: headers })
+      .then(() => {
+        commit('setUploaded', true)
+        commit('setUploadProgressValue', 100)
+        commit('setErrorStatus', null)
+        commit('setErrorData', null)
+      })
+      .catch(error => {
+        commit('setUploaded', false)
+        commit('setUploadProgressValue', 100)
+        commit('setErrorStatus', error.response.status)
+        commit('setErrorData', changeCaseObject.camelCase(error.response.data))
       })
   }
 }
@@ -78,6 +104,12 @@ export const mutations = {
   },
   setDeleted(state, data) {
     state.deleted = data
+  },
+  setUploaded(state, data) {
+    state.uploaded = data
+  },
+  setUploadProgressValue(state, data) {
+    state.uploadProgressValue = data
   }
 }
 
@@ -96,5 +128,11 @@ export const getters = {
   },
   deleted(state) {
     return state.deleted
+  },
+  uploaded(state) {
+    return state.uploaded
+  },
+  uploadProgressValue(state) {
+    return state.uploadProgressValue
   }
 }

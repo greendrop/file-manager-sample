@@ -58,6 +58,10 @@ class Attachment
         FileUtils.rm_rf(path)
       end
     end
+
+    def cp(src, dest, options = {})
+      FileUtils.cp(src, dest, options)
+    end
   end
 
   def as_api_json

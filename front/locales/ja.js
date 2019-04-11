@@ -26,6 +26,7 @@ export default {
     destroyModel: '{model}を削除しました。',
     createDirectory: 'ディレクトリを作成しました。',
     deleted: '削除しました。',
+    uploaded: 'アップロードしました。',
     signedIn: 'ログインしました。',
     signedOut: 'ログアウトしました。',
     errorOccurred: 'エラーが発生しました。'
@@ -48,7 +49,8 @@ export default {
     attachments: {
       index: {
         createDirectory: 'ディレクトリ作成',
-        directoryName: 'ディレクトリ名'
+        directoryName: 'ディレクトリ名',
+        uploadFile: 'ファイルアップロード'
       }
     }
   },
