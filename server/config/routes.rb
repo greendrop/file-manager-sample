@@ -7,4 +7,7 @@ Rails.application.routes.draw do
   namespace :api, path: :api, as: :api do
     extend RoutesApi
   end
+
+  # Docs
+  get '/docs/*path', to: 'docs#show' if Rails.env.development?
 end

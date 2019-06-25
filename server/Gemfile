@@ -49,6 +49,8 @@ group :development, :test do
   gem 'shoulda-matchers', '~> 3.1.1', require: false
   gem 'simplecov', '~> 0.12.0', require: false
   gem 'simplecov-console', '~> 0.4.2', require: false
+  gem 'committee', '~> 3.0.3', require: false
+  gem 'committee-rails', '~> 0.4.0', require: false
 end
 
 group :development do

@@ -71,6 +71,15 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
+    committee (3.0.3)
+      json_schema (~> 0.14, >= 0.14.3)
+      openapi_parser (>= 0.2.2)
+      rack (>= 1.5)
+    committee-rails (0.4.0)
+      actionpack
+      activesupport
+      committee (>= 2.4.0)
+      railties
     concurrent-ruby (1.1.5)
     coolline (0.5.0)
       unicode_utils (~> 1.4)
@@ -117,6 +126,7 @@ GEM
       multi_json (>= 1.2)
     json (2.2.0)
     json_expressions (0.9.0)
+    json_schema (0.20.6)
     kaminari (1.1.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.1.1)
@@ -159,6 +169,7 @@ GEM
     nio4r (2.3.1)
     nokogiri (1.10.2)
       mini_portile2 (~> 2.4.0)
+    openapi_parser (0.3.1)
     parallel (1.16.2)
     parser (2.6.2.0)
       ast (~> 2.4.0)
@@ -350,6 +361,8 @@ DEPENDENCIES
   bullet (~> 5.7.6)
   byebug
   coffee-rails (~> 4.2)
+  committee (~> 3.0.3)
+  committee-rails (~> 0.4.0)
   dotenv-rails (~> 2.5.0)
   enumerize (~> 2.2.2)
   factory_bot_rails (~> 4.11.1)

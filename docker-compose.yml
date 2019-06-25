@@ -49,6 +49,12 @@ services:
       - MYSQL_ROOT_PASSWORD=mysql
       - SPRING_SOCKET=/home/docker/.spring/spring.sock
     hostname: server-spring
+  server-swagger-ui:
+    image: swaggerapi/swagger-ui:v3.22.3
+    ports:
+      - "8081:8080"
+    environment:
+      - API_URL=http://localhost:3000/docs/api/schema.yml
   front:
     build: ./docker/front
     environment:

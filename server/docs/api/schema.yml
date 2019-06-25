@@ -1,0 +1,194 @@
+openapi: 3.0.0
+
+info:
+  version: 0.0.0
+  title: File Manager API
+
+servers:
+  - url: http://localhost:3000
+    description: Local
+
+tags:
+  - name: files
+
+paths:
+  /api/v1/files/list:
+    get:
+      tags:
+        - files
+      summary: ファイル一覧を取得
+      parameters:
+        - in: query
+          name: path
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Attachment"
+        500:
+          $ref: "#/components/responses/500"
+  /api/v1/files/get:
+    get:
+      tags:
+        - files
+      summary: ファイルを取得
+      parameters:
+        - in: query
+          name: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: string
+                format: binary
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+  /api/v1/files/download:
+    get:
+      tags:
+        - files
+      summary: ファイルをダウンロード
+      parameters:
+        - in: query
+          name: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: string
+                format: binary
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+  /api/v1/files/create_directory:
+    post:
+      tags:
+        - files
+      summary: ディレクトリを作成
+      parameters:
+        - in: query
+          name: path
+          required: true
+          schema:
+            type: string
+      responses:
+        201:
+          $ref: "#/components/responses/201"
+        500:
+          $ref: "#/components/responses/500"
+  /api/v1/files/upload:
+    post:
+      tags:
+        - files
+      summary: ファイルをアップロード
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        201:
+          $ref: "#/components/responses/201"
+        500:
+          $ref: "#/components/responses/500"
+  /api/v1/files/delete:
+    post:
+      tags:
+        - files
+      summary: ファイルを削除
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urulencoded:
+            schema:
+              type: object
+              properties:
+                path:
+                  type: string
+      responses:
+        201:
+          $ref: "#/components/responses/201"
+        500:
+          $ref: "#/components/responses/500"
+
+components:
+  responses:
+    200:
+      description: OK
+    201:
+      description: Created
+    204:
+      description: No Content
+    400:
+      description: Bad Request
+    401:
+      description: Unauthorized
+    402:
+      description: Payment Required
+    403:
+      description: Forbidden
+    404:
+      description: Not Found
+    500:
+      description: Internal Server Error
+  schemas:
+    Attachment:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: false
+          enum: [directory, file]
+        name:
+          type: string
+          nullable: false
+        sort_name:
+          type: string
+          nullable: false
+        path:
+          type: string
+          nullable: false
+        size:
+          type: integer
+          nullable: true
+        url:
+          type: string
+          nullable: false
+        download_url:
+          type: string
+          nullable: false
+        created_at:
+          type: string
+          format: date-time
+          nullable: false
+        updated_at:
+          type: string
+          format: date-time
+          nullable: false
+
+
