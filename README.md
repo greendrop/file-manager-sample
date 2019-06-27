@@ -11,6 +11,9 @@ Ruby on Rails(API) + Nuxt.js/Vue.js(FRONT)を使用したファイル管理の�
   - Nuxt.js
   - Vuetify
 
+## API
+  - https://petstore.swagger.io/?url=https%3a%2f%2fraw%2egithubusercontent%2ecom%2fgreendrop%2ffile%2dmanager%2dsample%2fmaster%2fserver%2fdocs%2fapi%2fschema%2eyml
+
 ## 環境構築アプリケーション
 
 - Docker
