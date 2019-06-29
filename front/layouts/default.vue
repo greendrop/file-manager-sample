@@ -47,7 +47,7 @@ export default {
       items: [
         {
           icon: 'fas fa-home',
-          title: this.$i18n.t('common.home'),
+          title: this.$i18n.t('labels.home'),
           to: '/'
         },
         {

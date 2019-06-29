@@ -51,6 +51,7 @@ export default {
     '@nuxtjs/pwa',
     '@nuxtjs/dotenv',
     '@nuxtjs/toast',
+    'nuxt-logger',
     [
       'nuxt-i18n',
       {
@@ -72,6 +73,13 @@ export default {
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+  },
+
+  /*
+   ** Logger configuration
+   */
+  logger: {
+    logLevel: process.env.NODE_ENV === 'production' ? 'error' : 'debug'
   },
 
   /*

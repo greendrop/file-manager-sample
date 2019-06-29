@@ -1,5 +1,5 @@
 export default {
-  common: {
+  labels: {
     listModel: '{model}一覧',
     showModel: '{model}詳細',
     newModel: '{model}作成',
@@ -17,7 +17,10 @@ export default {
     signIn: 'ログイン',
     signOut: 'ログアウト',
     root: 'ルート',
-    close: '閉じる'
+    close: '閉じる',
+    createDirectory: 'ディレクトリ作成',
+    directoryName: 'ディレクトリ名',
+    uploadFile: 'ファイルアップロード'
   },
   messages: {
     destroyConfirm: '本当に削除してもいいですか?',
@@ -43,16 +46,5 @@ export default {
         updatedAt: '更新日時'
       }
     }
-  },
-  layouts: {},
-  pages: {
-    attachments: {
-      index: {
-        createDirectory: 'ディレクトリ作成',
-        directoryName: 'ディレクトリ名',
-        uploadFile: 'ファイルアップロード'
-      }
-    }
-  },
-  components: {}
+  }
 }
