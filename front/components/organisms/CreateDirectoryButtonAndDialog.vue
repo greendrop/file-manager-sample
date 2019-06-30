@@ -1,35 +1,25 @@
-<template>
-  <v-dialog v-model="dialog" persistent>
-    <template v-slot:activator="{ on }">
-      <v-btn v-on="on">
-        <v-icon small class="mr-1">
-          fas fa-folder-plus
-        </v-icon>
-        {{ $t('labels.createDirectory') }}
-      </v-btn>
-    </template>
-    <v-card>
-      <v-card-title>
-        <span class="headline">
-          {{ $t('labels.createDirectory') }}
-        </span>
-      </v-card-title>
-      <v-card-text>
-        <v-container grid-list-md>
-          <CreateDirectoryForm :directory-name.sync="directoryName" />
-        </v-container>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn @click="createDirectory()">
-          {{ $t('labels.new') }}
-        </v-btn>
-        <v-btn @click="dialogClose()">
-          {{ $t('labels.close') }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+<template lang="pug">
+  v-dialog(v-model="dialog" persistent)
+    template(v-slot:activator="{ on }")
+      v-btn(v-on="on")
+        v-icon(small class="mr-1") fas fa-folder-plus
+        = "{{ $t('labels.createDirectory') }}"
+
+    v-card
+      v-card-title
+        span.headline
+          = "{{ $t('labels.createDirectory') }}"
+
+      v-card-text
+        v-container(grid-list-md)
+          CreateDirectoryForm(:directory-name.sync="directoryName")
+
+      v-card-actions
+        v-spacer
+        v-btn(@click="createDirectory()")
+          = "{{ $t('labels.new') }}"
+        v-btn(@click="dialogClose()")
+          = "{{ $t('labels.close') }}"
 </template>
 
 <script>

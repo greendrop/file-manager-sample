@@ -1,3 +1,17 @@
+<template lang="pug">
+  div
+    input(
+      ref="uploadFile"
+      type="file"
+      multiple
+      style="display: none"
+      @change="selectUploadFiles"
+    )
+    v-btn(@click="$refs.uploadFile.click()")
+      v-icon(small class="mr-1") fas fa-upload
+      = "{{ $t('labels.uploadFile') }}"
+</template>
+
 <template>
   <div>
     <input

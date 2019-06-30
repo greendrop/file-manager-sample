@@ -109,6 +109,14 @@ export default {
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
           enforce: 'pre',
+          test: /\.(vue)$/,
+          loader: 'vue-pug-lint-loader',
+          options: require('./.puglintrc.js'),
+          exclude: /(node_modules)/
+        })
+
+        config.module.rules.push({
+          enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
           exclude: /(node_modules)/

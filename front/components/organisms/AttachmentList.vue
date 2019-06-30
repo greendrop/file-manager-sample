@@ -1,81 +1,64 @@
-<template>
-  <v-flex xs12 sm12 md12>
-    <v-layout row wrap>
-      <v-flex xs12 sm12 md12>
-        <v-layout row wrap>
-          <v-flex xs12 sm12 md12 mb-1>
-            <v-breadcrumbs :items="pathBreadcrumbItems" />
-          </v-flex>
-        </v-layout>
-      </v-flex>
-      <v-flex
+<template lang="pug">
+  v-flex(xs12 sm12 md12)
+    v-layout(row wrap)
+      v-flex(xs12 sm12 md12)
+        v-layout(row wrap)
+          v-flex(xs12 sm12 md12 mb-1)
+            v-breadcrumbs(:items="pathBreadcrumbItems")
+
+      v-flex(
         xs12
         sm12
         md12
         @dragleave.prevent
         @dragover.prevent
         @drop.prevent="dropFiles"
-      >
-        <v-data-table
+      )
+        v-data-table(
           :headers="attachmentHeaders"
           :items="attachments"
           :loading="attachmentLoading"
           hide-actions
-        >
-          <template slot="items" slot-scope="props">
-            <td>
-              <template v-if="props.item.type === 'directory'">
-                <div @dblclick="openDirectory(props.item)">
-                  <v-icon small>
-                    fas fa-folder
-                  </v-icon>
-                  {{ props.item.name }}
-                </div>
-              </template>
-              <template v-if="props.item.type === 'file'">
-                <div @dblclick="openFile(props.item)">
-                  <v-icon small>
-                    fas fa-file
-                  </v-icon>
-                  {{ props.item.name }}
-                </div>
-              </template>
-            </td>
-            <td>{{ props.item.size }}</td>
-            <td>{{ props.item.createdAt | datetime }}</td>
-            <td>{{ props.item.updatedAt | datetime }}</td>
-            <td>
-              <v-layout justify-center>
-                <template v-if="props.item.type === 'file'">
-                  <v-icon small class="mr-1" @click="downloadFile(props.item)">
-                    fas fa-download
-                  </v-icon>
-                  <v-icon
+        )
+          template(slot="items" slot-scope="props")
+            td
+              template(v-if="props.item.type === 'directory'")
+                div(@dblclick="openDirectory(props.item)")
+                  v-icon(small) fas fa-folder
+                  = " {{ props.item.name }}"
+
+              template(v-if="props.item.type === 'file'")
+                div(@dblclick="openFile(props.item)")
+                  v-icon(small) fas fa-file
+                  = " {{ props.item.name }}"
+
+            td
+              = "{{ props.item.size }}"
+
+            td
+              = "{{ props.item.createdAt | datetime }}"
+
+            td
+              = "{{ props.item.updatedAt | datetime }}"
+
+            td
+              v-layout(justify-center)
+                template(v-if="props.item.type === 'file'")
+                  v-icon(small class="mr-1" @click="downloadFile(props.item)") fas fa-download
+                  v-icon(
                     small
                     class="mr-1"
                     color="error"
                     @click="deleteAttachment(props.item)"
-                  >
-                    fas fa-trash-alt
-                  </v-icon>
-                </template>
-                <template v-if="props.item.type === 'directory'">
-                  <v-icon
+                  ) fas fa-trash-alt
+
+                template(v-if="props.item.type === 'directory'")
+                  v-icon(
                     small
                     class="mr-1"
                     color="error"
                     @click="deleteAttachment(props.item)"
-                  >
-                    fas fa-trash-alt
-                  </v-icon>
-                </template>
-              </v-layout>
-            </td>
-          </template>
-        </v-data-table>
-      </v-flex>
-    </v-layout>
-  </v-flex>
+                  ) fas fa-trash-alt
 </template>
 
 <script>
